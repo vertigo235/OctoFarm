@@ -1,0 +1,26 @@
+version: "3"
+services:
+  mongo:
+    image: mongo
+    restart: always
+    volumes:
+      - ./db:/data/db
+    logging:
+      driver: json-file
+
+  octofarm:
+    container_name: octofarm
+    #image: octofarm/octofarm
+    build: 
+      context: .
+    restart: always
+    ports:
+      - 4000:4000
+    environment:
+      - MONGO=mongodb://mongo/octofarm
+      - TZ=US/Eastern
+    volumes:
+      - ./config:/app/serverConfig
+      - ./logs:/app/logs
+    logging:
+      driver: json-file
